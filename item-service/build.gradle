@@ -1,5 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.4'
+	/*boot 2.6.8로 해야 타임리프 변수 에러 안남*/
+	id 'org.springframework.boot' version '2.6.8'
 	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
 	id 'java'
 }
