@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -42,14 +43,20 @@ public class BasicItemController {
     }
 
 
-    @PostMapping(value = "/add")
+//    @PostMapping(value = "/add")
     public String add(@ModelAttribute Item item) {
-        log.info("itemParam={}", item);
-
         itemRepository.save(item);
 //        model.addAttribute("item", savedItem); // @ModelAttribute("item") 과 타입 'Item' 이 같으면 ("item")도 생략가능
 
-        return "basic/item";
+        return "redirect:/basic/items/" + item.getId();
+    }
+
+    @PostMapping(value = "/add")
+    public String addV2(@ModelAttribute Item item, RedirectAttributes redirectAttributes) {
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true); // queryString 넣기 ?status=true
+        return "redirect:/basic/items/{itemId}";
     }
 
     @GetMapping("/{itemId}/edit")
